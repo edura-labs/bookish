@@ -3,6 +3,12 @@
 // Bookish: Reading Tracker. Theme: warm "paper, ink and walnut" look.
 // Serif headings (Fraunces) for a bookish feel, Inter for readable body text.
 // Light and dark themes share one builder so they never drift apart.
+//
+// Text contrast rule: dark text on light backgrounds; white/light text on
+// dark backgrounds and everywhere in dark mode. Any coloured fill that
+// carries text (buttons, chips, banners) must be dark enough for white text.
+// In dark mode, accent-coloured TEXT on the dark background uses the lighter
+// *Text tones below, never the fill tones.
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,13 +30,15 @@ class AppColors {
   static const nightSurface = Color(0xFF1F1C17);
   static const parchment = Color(0xFFEDE6DA);
   static const parchmentMuted = Color(0xFFA89F93);
-  static const accentDark =
-      Color(0xFFC49A6C); // oak: walnut lifted for dark mode
-  static const forestDark = Color(0xFF7FB5A3);
+  static const accentDark = Color(0xFF9A6840); // walnut fill, white text
+  static const accentDarkText = Color(0xFFC49A6C); // oak text on night
+  static const forestDark = Color(0xFF447F6D); // forest fill, white text
+  static const forestDarkText = Color(0xFF7FB5A3); // forest text on night
   static const dividerDark = Color(0xFF2E2A23);
 
   static const error = Color(0xFFB3261E);
-  static const errorDark = Color(0xFFF2B8B5);
+  static const errorDark = Color(0xFFD2453A); // error fill, white text
+  static const errorDarkText = Color(0xFFF2B8B5); // error text on night
 }
 
 class AppTheme {
@@ -38,6 +46,8 @@ class AppTheme {
 
   static ThemeData get light => _build(
         scaffold: AppColors.paper,
+        accentText: AppColors.accent,
+        errorText: AppColors.error,
         scheme: const ColorScheme(
           brightness: Brightness.light,
           primary: AppColors.accent,
@@ -55,14 +65,16 @@ class AppTheme {
 
   static ThemeData get dark => _build(
         scaffold: AppColors.night,
+        accentText: AppColors.accentDarkText,
+        errorText: AppColors.errorDarkText,
         scheme: const ColorScheme(
           brightness: Brightness.dark,
           primary: AppColors.accentDark,
-          onPrimary: AppColors.night,
+          onPrimary: Colors.white,
           secondary: AppColors.forestDark,
-          onSecondary: AppColors.night,
+          onSecondary: Colors.white,
           error: AppColors.errorDark,
-          onError: AppColors.night,
+          onError: Colors.white,
           surface: AppColors.nightSurface,
           onSurface: AppColors.parchment,
           onSurfaceVariant: AppColors.parchmentMuted,
@@ -73,6 +85,8 @@ class AppTheme {
   static ThemeData _build({
     required ColorScheme scheme,
     required Color scaffold,
+    required Color accentText,
+    required Color errorText,
   }) {
     final base = ThemeData(
       useMaterial3: true,
@@ -121,6 +135,7 @@ class AppTheme {
         fillColor: scheme.surface,
         hintStyle:
             textTheme.bodyMedium?.copyWith(color: scheme.onSurfaceVariant),
+        errorStyle: textTheme.bodySmall?.copyWith(color: errorText),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         border:
@@ -140,9 +155,13 @@ class AppTheme {
               textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(foregroundColor: accentText),
+      ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           minimumSize: const Size(0, 52),
+          foregroundColor: accentText,
           side: hairline,
           shape: RoundedRectangleBorder(borderRadius: radius14),
         ),
