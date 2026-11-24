@@ -25,6 +25,7 @@ class AdaptivePage extends StatefulWidget {
     required this.slivers,
     this.largeTitle = false,
     this.actions = const [],
+    this.searchField,
   });
 
   final String title;
@@ -37,6 +38,10 @@ class AdaptivePage extends StatefulWidget {
   /// two; overflow belongs in a menu.
   final List<Widget> actions;
 
+  /// Optional search field, usually an [AdaptiveSearchField]. Sits under the
+  /// large title (collapsing with it on iOS 26) or at the top of the content.
+  final Widget? searchField;
+
   @override
   State<AdaptivePage> createState() => _AdaptivePageState();
 }
@@ -46,6 +51,18 @@ class _AdaptivePageState extends State<AdaptivePage> {
   GlassLargeTitleController? _titleController;
 
   static const _glassBarHeight = 44.0;
+
+  /// The search field as a sliver, for layouts that place it in the content.
+  List<Widget> _searchSliver() {
+    final field = widget.searchField;
+    if (field == null) return const [];
+    return [
+      SliverPadding(
+        padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+        sliver: SliverToBoxAdapter(child: field),
+      ),
+    ];
+  }
 
   @override
   void dispose() {
@@ -80,14 +97,20 @@ class _AdaptivePageState extends State<AdaptivePage> {
       ),
       body: CustomScrollView(
         controller: titleController?.scrollController,
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         slivers: [
           SliverToBoxAdapter(child: SizedBox(height: topInset)),
           if (titleController != null)
+            // iOS 26 pattern: the search field sits under the large title
+            // and collapses with it.
             GlassLargeTitle(
               text: widget.title,
               controller: titleController,
               color: Theme.of(context).colorScheme.onSurface,
-            ),
+              searchBar: widget.searchField,
+            )
+          else
+            ..._searchSliver(),
           ...widget.slivers,
           SliverToBoxAdapter(child: SizedBox(height: media.padding.bottom)),
         ],
@@ -104,11 +127,13 @@ class _AdaptivePageState extends State<AdaptivePage> {
     if (widget.largeTitle) {
       return CupertinoPageScaffold(
         child: CustomScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           slivers: [
             CupertinoSliverNavigationBar(
               largeTitle: Text(widget.title),
               trailing: trailing,
             ),
+            ..._searchSliver(),
             ...widget.slivers,
             SliverToBoxAdapter(child: SizedBox(height: padding.bottom)),
           ],
@@ -124,8 +149,10 @@ class _AdaptivePageState extends State<AdaptivePage> {
         trailing: trailing,
       ),
       child: CustomScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         slivers: [
           SliverToBoxAdapter(child: SizedBox(height: padding.top)),
+          ..._searchSliver(),
           ...widget.slivers,
           SliverToBoxAdapter(child: SizedBox(height: padding.bottom)),
         ],
@@ -138,7 +165,9 @@ class _AdaptivePageState extends State<AdaptivePage> {
     return Scaffold(
       appBar: AppBar(title: Text(widget.title), actions: widget.actions),
       body: CustomScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         slivers: [
+          ..._searchSliver(),
           ...widget.slivers,
           SliverToBoxAdapter(child: SizedBox(height: bottom)),
         ],
