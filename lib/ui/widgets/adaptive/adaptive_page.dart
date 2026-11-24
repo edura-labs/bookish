@@ -83,7 +83,11 @@ class _AdaptivePageState extends State<AdaptivePage> {
         slivers: [
           SliverToBoxAdapter(child: SizedBox(height: topInset)),
           if (titleController != null)
-            GlassLargeTitle(text: widget.title, controller: titleController),
+            GlassLargeTitle(
+              text: widget.title,
+              controller: titleController,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ...widget.slivers,
           SliverToBoxAdapter(child: SizedBox(height: media.padding.bottom)),
         ],

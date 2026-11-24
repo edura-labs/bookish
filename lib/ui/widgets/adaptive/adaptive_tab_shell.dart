@@ -96,12 +96,15 @@ class _AdaptiveTabShellState extends State<AdaptiveTabShell> {
 
   Widget _buildGlass(BuildContext context, CupertinoTabController controller) {
     final tint = CupertinoTheme.of(context).primaryColor;
+    final muted = Theme.of(context).colorScheme.onSurfaceVariant;
     final tabBar = GlassTabBar.bottom(
       selectedIndex: widget.currentIndex,
       // The controller's listener reports the change to the ViewModel.
       onTabSelected: (index) => controller.index = index,
       selectedIconColor: tint,
       selectedLabelColor: tint,
+      unselectedIconColor: muted,
+      unselectedLabelColor: muted,
       tabs: [
         for (final tab in widget.tabs)
           GlassTab(
@@ -136,6 +139,8 @@ class _AdaptiveTabShellState extends State<AdaptiveTabShell> {
     return CupertinoTabScaffold(
       controller: controller,
       tabBar: CupertinoTabBar(
+        // Active tint comes from the Cupertino theme (walnut / oak).
+        inactiveColor: Theme.of(context).colorScheme.onSurfaceVariant,
         items: [
           for (final tab in widget.tabs)
             BottomNavigationBarItem(

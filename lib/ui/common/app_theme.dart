@@ -121,6 +121,9 @@ class AppTheme {
       cupertinoOverrideTheme: CupertinoThemeData(
         brightness: scheme.brightness,
         primaryColor: accentText,
+        // Cupertino text defaults to Apple's system label colours; use the
+        // app's ink (light) / parchment (dark) instead, keeping SF sizes.
+        textTheme: _cupertinoTextTheme(accentText, scheme.onSurface),
         primaryContrastingColor: scheme.brightness == Brightness.light
             ? Colors.white
             : AppColors.night,
@@ -201,6 +204,15 @@ class AppTheme {
         thickness: 1,
         space: 1,
       ),
+    );
+  }
+
+  static CupertinoTextThemeData _cupertinoTextTheme(Color tint, Color text) {
+    final base = CupertinoTextThemeData(primaryColor: tint);
+    return base.copyWith(
+      textStyle: base.textStyle.copyWith(color: text),
+      navTitleTextStyle: base.navTitleTextStyle.copyWith(color: text),
+      navLargeTitleTextStyle: base.navLargeTitleTextStyle.copyWith(color: text),
     );
   }
 

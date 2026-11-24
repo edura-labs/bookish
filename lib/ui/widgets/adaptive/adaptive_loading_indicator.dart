@@ -11,8 +11,11 @@ class AdaptiveLoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Colours from the app theme in light and dark mode.
     final indicator = AppPlatform.current.isIos
-        ? const CupertinoActivityIndicator()
+        ? CupertinoActivityIndicator(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          )
         : const CircularProgressIndicator();
     return Semantics(label: semanticLabel, child: indicator);
   }
