@@ -1,71 +1,38 @@
+import 'package:bookish/ui/common/app_strings.dart';
+import 'package:bookish/ui/views/search/search_view.dart';
+import 'package:bookish/ui/views/shelf/shelf_view.dart';
+import 'package:bookish/ui/widgets/adaptive/adaptive_tab_shell.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:bookish/ui/common/app_colors.dart';
-import 'package:bookish/ui/common/ui_helpers.dart';
 
 import 'home_viewmodel.dart';
 
+/// The app's root: top-level tabs for Search and My Shelf.
 class HomeView extends StackedView<HomeViewModel> {
-  const HomeView({Key? key}) : super(key: key);
+  const HomeView({super.key});
 
   @override
   Widget builder(BuildContext context, HomeViewModel viewModel, Widget? child) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0),
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                verticalSpaceLarge,
-                Column(
-                  children: [
-                    const Text(
-                      'Hello, STACKED!',
-                      style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    verticalSpaceMedium,
-                    MaterialButton(
-                      color: Colors.black,
-                      onPressed: viewModel.incrementCounter,
-                      child: Text(
-                        viewModel.counterLabel,
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    MaterialButton(
-                      color: kcDarkGreyColor,
-                      onPressed: viewModel.showDialog,
-                      child: const Text(
-                        'Show Dialog',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    MaterialButton(
-                      color: kcDarkGreyColor,
-                      onPressed: viewModel.showBottomSheet,
-                      child: const Text(
-                        'Show Bottom Sheet',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+    return AdaptiveTabShell(
+      currentIndex: viewModel.currentIndex,
+      onTabSelected: viewModel.setIndex,
+      tabs: const [
+        AdaptiveTab(
+          label: ksTabSearch,
+          materialIcon: Icons.search_outlined,
+          materialSelectedIcon: Icons.search,
+          cupertinoIcon: CupertinoIcons.search,
+          child: SearchView(),
         ),
-      ),
+        AdaptiveTab(
+          label: ksTabShelf,
+          materialIcon: Icons.collections_bookmark_outlined,
+          materialSelectedIcon: Icons.collections_bookmark,
+          cupertinoIcon: CupertinoIcons.book_fill,
+          child: ShelfView(),
+        ),
+      ],
     );
   }
 

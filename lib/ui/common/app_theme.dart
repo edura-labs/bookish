@@ -1,7 +1,9 @@
 // lib/ui/common/app_theme.dart
 //
 // Bookish: Reading Tracker. Theme: warm "paper, ink and walnut" look.
-// Serif headings (Fraunces) for a bookish feel, Inter for readable body text.
+// Android: serif headings (Fraunces) for a bookish feel, Inter for body text.
+// iOS: San Francisco throughout, per Apple's guidelines; Fraunces only for
+// in-content display text via AppTypography.bookTitle.
 // Light and dark themes share one builder so they never drift apart.
 //
 // Text contrast rule: dark text on light backgrounds; white/light text on
@@ -10,6 +12,9 @@
 // In dark mode, accent-coloured TEXT on the dark background uses the lighter
 // *Text tones below, never the fill tones.
 
+import 'package:bookish/ui/common/app_platform.dart';
+import 'package:bookish/ui/common/app_typography.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -45,6 +50,7 @@ class AppTheme {
   AppTheme._();
 
   static ThemeData get light => _build(
+        isIos: AppPlatform.current.isIos,
         scaffold: AppColors.paper,
         accentText: AppColors.accent,
         errorText: AppColors.error,
@@ -64,6 +70,7 @@ class AppTheme {
       );
 
   static ThemeData get dark => _build(
+        isIos: AppPlatform.current.isIos,
         scaffold: AppColors.night,
         accentText: AppColors.accentDarkText,
         errorText: AppColors.errorDarkText,
@@ -83,6 +90,7 @@ class AppTheme {
       );
 
   static ThemeData _build({
+    required bool isIos,
     required ColorScheme scheme,
     required Color scaffold,
     required Color accentText,
@@ -94,17 +102,7 @@ class AppTheme {
       brightness: scheme.brightness,
     );
 
-    final body = GoogleFonts.interTextTheme(base.textTheme);
-    TextStyle? serif(TextStyle? s) =>
-        GoogleFonts.fraunces(textStyle: s, fontWeight: FontWeight.w600);
-
-    final textTheme = body
-        .copyWith(
-          displaySmall: serif(body.displaySmall),
-          headlineMedium: serif(body.headlineMedium),
-          headlineSmall: serif(body.headlineSmall),
-          titleLarge: serif(body.titleLarge),
-        )
+    final textTheme = (isIos ? base.textTheme : _androidTextTheme(base))
         .apply(bodyColor: scheme.onSurface, displayColor: scheme.onSurface);
 
     final radius14 = BorderRadius.circular(14);
@@ -113,6 +111,22 @@ class AppTheme {
     return base.copyWith(
       scaffoldBackgroundColor: scaffold,
       textTheme: textTheme,
+      extensions: [
+        isIos
+            ? AppTypography.apple(scheme.onSurface)
+            : AppTypography.material(textTheme, scheme.onSurface),
+      ],
+      // Cupertino widgets read this. primaryColor is the tint for text and
+      // icons (walnut on paper, oak on night); fills come from the scheme.
+      cupertinoOverrideTheme: CupertinoThemeData(
+        brightness: scheme.brightness,
+        primaryColor: accentText,
+        primaryContrastingColor: scheme.brightness == Brightness.light
+            ? Colors.white
+            : AppColors.night,
+        scaffoldBackgroundColor: scaffold,
+        barBackgroundColor: scaffold.withValues(alpha: 0.92),
+      ),
       appBarTheme: AppBarTheme(
         backgroundColor: scaffold,
         foregroundColor: scheme.onSurface,
@@ -187,6 +201,19 @@ class AppTheme {
         thickness: 1,
         space: 1,
       ),
+    );
+  }
+
+  // Inter body, Fraunces for the larger headings (Android only).
+  static TextTheme _androidTextTheme(ThemeData base) {
+    final body = GoogleFonts.interTextTheme(base.textTheme);
+    TextStyle? serif(TextStyle? s) =>
+        GoogleFonts.fraunces(textStyle: s, fontWeight: FontWeight.w600);
+    return body.copyWith(
+      displaySmall: serif(body.displaySmall),
+      headlineMedium: serif(body.headlineMedium),
+      headlineSmall: serif(body.headlineSmall),
+      titleLarge: serif(body.titleLarge),
     );
   }
 }

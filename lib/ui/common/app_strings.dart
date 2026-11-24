@@ -14,3 +14,16 @@ const String ksErrorBadResponse =
     'We got an unexpected response from Open Library. Please try again.';
 const String ksErrorCancelled = 'The request was cancelled.';
 const String ksErrorUnknown = 'Something went wrong. Please try again.';
+
+// Tabs and top-level screens
+const String ksTabSearch = 'Search';
+const String ksTabShelf = 'Shelf';
+const String ksSearchTitle = 'Search';
+const String ksShelfTitle = 'My Shelf';
+
+// Empty states
+const String ksSearchEmptyTitle = 'Find your next book';
+const String ksSearchEmptyMessage = 'Search by title, author or keyword.';
+const String ksShelfEmptyTitle = 'Your shelf is empty';
+const String ksShelfEmptyMessage =
+    'Books you add from Search will show up here.';

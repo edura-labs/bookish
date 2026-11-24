@@ -54,9 +54,10 @@ lib/
   models/       Book, ShelfEntry
   services/     OpenLibraryService (API), ShelfService (storage)
   ui/
-    common/     Theme, colours, spacing helpers
+    common/     Theme, typography roles, platform detection, strings, spacing
     views/      Screens, each with its ViewModel
     widgets/    Reusable widgets (book cover, book tile, status chip)
+      adaptive/ One API per control, rendered natively per platform
 test/           ViewModel, service and golden tests
 ```
 
