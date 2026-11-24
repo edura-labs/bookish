@@ -29,6 +29,11 @@ class Bookish extends StatelessWidget {
       onGenerateRoute: StackedRouter().onGenerateRoute,
       navigatorKey: StackedService.navigatorKey,
       navigatorObservers: [StackedService.routeObserver],
+      // iOS screens are Cupertino widgets inside MaterialApp. A transparent
+      // Material gives them a default text style (no yellow debug
+      // underlines) and lets Material widgets like InkWell work anywhere.
+      builder: (context, child) =>
+          Material(type: MaterialType.transparency, child: child),
     );
   }
 }
