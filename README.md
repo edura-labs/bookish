@@ -110,12 +110,13 @@ flutter test --update-goldens
 
 1. ✅ Project setup, theme, bundle ID, iOS/Android only
 2. ✅ `Book` model and `OpenLibraryService`
-3. ⬜ Search screen with debounced search and result tiles
-4. ⬜ Book detail screen
-5. ⬜ `ShelfEntry` model, `ShelfService` (Hive), add/change status
-6. ⬜ My Shelf screen with three tabs
-7. ⬜ Reading progress updates
-8. ⬜ Polish: loading, empty and error states; dark mode review
+3. ⬜ Adaptive UI foundation: Cupertino on iOS (Liquid Glass chrome on iOS 26+), Material 3 on Android
+4. ⬜ Search screen with debounced search and result tiles
+5. ⬜ Book detail screen
+6. ⬜ `ShelfEntry` model, `ShelfService` (Hive), add/change status
+7. ⬜ My Shelf screen with three tabs
+8. ⬜ Reading progress updates
+9. ⬜ Polish: loading, empty and error states; dark mode review on both platforms
 
 ## Data source and credits
 
