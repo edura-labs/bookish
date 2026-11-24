@@ -3,7 +3,7 @@ import 'package:bookish/ui/widgets/adaptive/adaptive_page.dart';
 import 'package:bookish/ui/widgets/empty_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
+import 'package:stacked/stacked.dart' hide AdaptivePage;
 
 import 'search_viewmodel.dart';
 
