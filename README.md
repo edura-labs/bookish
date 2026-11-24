@@ -60,7 +60,7 @@ lib/
     views/      Screens, each with its ViewModel
     widgets/    Reusable widgets (book cover, book tile, status chip)
       adaptive/ One API per control, rendered natively per platform
-test/           ViewModel, service and golden tests
+test/           ViewModel, service and platform tests
 ```
 
 **Rules:** ViewModels never call Dio or Hive directly. All API access goes through `OpenLibraryService` and all storage through `ShelfService`, registered in `lib/app/app.dart` and accessed via the locator.
@@ -95,12 +95,6 @@ stacked create service <name>
 flutter test
 ```
 
-Golden tests live in `test/golden/`. To regenerate the golden screenshots after an intentional UI change:
-
-```bash
-flutter test --update-goldens
-```
-
 ## App identity
 
 | | |
@@ -113,7 +107,7 @@ flutter test --update-goldens
 
 1. ✅ Project setup, theme, bundle ID, iOS/Android only
 2. ✅ `Book` model and `OpenLibraryService`
-3. ⬜ Adaptive UI foundation: Cupertino on iOS (Liquid Glass chrome on iOS 26+), Material 3 on Android
+3. ✅ Adaptive UI foundation: Cupertino on iOS (Liquid Glass chrome on iOS 26+), Material 3 on Android
 4. ⬜ Search screen with debounced search and result tiles
 5. ⬜ Book detail screen
 6. ⬜ `ShelfEntry` model, `ShelfService` (Hive), add/change status

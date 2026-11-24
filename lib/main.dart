@@ -1,5 +1,3 @@
-import 'package:bookish/app/app.bottomsheets.dart';
-import 'package:bookish/app/app.dialogs.dart';
 import 'package:bookish/app/app.locator.dart';
 import 'package:bookish/app/app.router.dart';
 import 'package:bookish/ui/common/app_platform.dart';
@@ -11,8 +9,6 @@ import 'package:stacked_services/stacked_services.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupLocator();
-  setupDialogUi();
-  setupBottomSheetUi();
 
   // Liquid Glass is only for iOS 26+. Other platforms never load its shaders.
   if (AppPlatform.current == AppPlatform.iosGlass) {

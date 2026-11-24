@@ -1,7 +1,3 @@
-const String ksHomeBottomSheetTitle = 'Build Great Apps!';
-const String ksHomeBottomSheetDescription =
-    'Stacked is built to help you build better apps. Give us a chance and we\'ll prove it to you. Check out stacked.filledstacks.com to learn more';
-
 // Open Library errors (shown to the user)
 const String ksErrorNoConnection =
     'You appear to be offline. Check your connection and try again.';
