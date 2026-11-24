@@ -27,6 +27,7 @@ A quiet, offline-first reading tracker for iOS and Android. Search for any book,
 - **Type:** Fraunces (serif) for headings and titles, Inter for body text.
 - **Contrast rule:** dark text on light backgrounds; white/light text on dark backgrounds and throughout dark mode.
 - Follows the system light/dark setting.
+- **Platform-adaptive:** native Cupertino UI on iOS (with Liquid Glass navigation chrome on iOS 26+), Material 3 on Android. Each screen is written once against shared adaptive widgets.
 
 The theme lives in [`lib/ui/common/app_theme.dart`](lib/ui/common/app_theme.dart).
 
