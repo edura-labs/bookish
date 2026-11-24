@@ -108,7 +108,7 @@ flutter test --update-goldens
 ## Roadmap
 
 1. ✅ Project setup, theme, bundle ID, iOS/Android only
-2. ⬜ `Book` model and `OpenLibraryService`
+2. ✅ `Book` model and `OpenLibraryService`
 3. ⬜ Search screen with debounced search and result tiles
 4. ⬜ Book detail screen
 5. ⬜ `ShelfEntry` model, `ShelfService` (Hive), add/change status
