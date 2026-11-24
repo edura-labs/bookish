@@ -15,6 +15,7 @@ A quiet, offline-first reading tracker for iOS and Android. Search for any book,
 | Shelf | Add a book as **Want to Read**, **Reading** or **Finished**, and change its status | Planned |
 | Progress | Log your current page; see percentage complete | Planned |
 | My Shelf | Your books in three tabs, one per status | Planned |
+| Onboarding | Three quick steps: welcome, find the book you're reading, set your page. Skippable, shown once | Planned |
 
 **Not in v1:** reading stats, yearly goals, notes and quotes, barcode/ISBN scanning, sharing, accounts, cloud sync, home-screen widgets.
 
@@ -117,7 +118,8 @@ flutter test --update-goldens
 6. ⬜ `ShelfEntry` model, `ShelfService` (Hive), add/change status
 7. ⬜ My Shelf screen with three tabs
 8. ⬜ Reading progress updates
-9. ⬜ Polish: loading, empty and error states; dark mode review on both platforms
+9. ⬜ Onboarding
+10. ⬜ Polish: loading, empty and error states; dark mode review on both platforms
 
 ## Data source and credits
 
