@@ -1,3 +1,4 @@
+import 'package:bookish/services/open_library_service.dart';
 import 'package:bookish/ui/bottom_sheets/notice/notice_sheet.dart';
 import 'package:bookish/ui/dialogs/info_alert/info_alert_dialog.dart';
 import 'package:bookish/ui/views/home/home_view.dart';
@@ -17,6 +18,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: BottomSheetService),
     LazySingleton(classType: DialogService),
     LazySingleton(classType: NavigationService),
+    LazySingleton(classType: OpenLibraryService),
     // @stacked-service
   ],
   bottomsheets: [
