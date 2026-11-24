@@ -29,9 +29,12 @@ dev_dependencies:
   stacked_generator: ^1.3.3
   golden_toolkit: ^0.15.0
   hive_ce_generator: ^1.10.0
+  flutter_native_splash: ^2.4.8
 
 flutter:
   uses-material-design: true
 
-assets:
-  - assets/png/
+  assets:
+    - assets/png/
+    # Add assets/svg/ here once it contains a file: git doesn't track empty
+    # folders, so a fresh clone would fail to build.
