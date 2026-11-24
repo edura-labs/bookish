@@ -2,8 +2,10 @@ import 'package:bookish/app/app.bottomsheets.dart';
 import 'package:bookish/app/app.dialogs.dart';
 import 'package:bookish/app/app.locator.dart';
 import 'package:bookish/app/app.router.dart';
+import 'package:bookish/ui/common/app_platform.dart';
 import 'package:bookish/ui/common/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 Future<void> main() async {
@@ -11,6 +13,19 @@ Future<void> main() async {
   await setupLocator();
   setupDialogUi();
   setupBottomSheetUi();
+
+  // Liquid Glass is only for iOS 26+. Other platforms never load its shaders.
+  if (AppPlatform.current == AppPlatform.iosGlass) {
+    await LiquidGlassWidgets.initialize();
+    runApp(
+      LiquidGlassWidgets.wrap(
+        child: const Bookish(),
+        // Glass follows the app's ThemeMode, not just the OS setting.
+        brightnessResolver: Theme.maybeBrightnessOf,
+      ),
+    );
+    return;
+  }
   runApp(const Bookish());
 }
 

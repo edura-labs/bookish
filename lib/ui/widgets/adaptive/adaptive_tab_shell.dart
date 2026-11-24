@@ -1,6 +1,7 @@
 import 'package:bookish/ui/common/app_platform.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
 /// One top-level destination. Labels should be a single word where possible.
 class AdaptiveTab {
@@ -23,9 +24,12 @@ class AdaptiveTab {
 
 /// Top-level navigation, rendered natively per platform:
 ///
-/// * iOS: `CupertinoTabScaffold` + `CupertinoTabBar`. Each tab gets its own
-///   navigation stack (`CupertinoTabView`), so pushed screens keep the tab bar
-///   and each tab keeps its place when you switch away and back.
+/// * iOS 26+: a floating Liquid Glass tab bar (`GlassTabBar.bottom`) over the
+///   content. Falls back to the classic bar when Increase Contrast is on.
+/// * iOS below 26: `CupertinoTabScaffold` + `CupertinoTabBar`.
+/// * On both iOS paths each tab gets its own navigation stack
+///   (`CupertinoTabView`), so pushed screens keep the tab bar and each tab
+///   keeps its place when you switch away and back.
 /// * Android: Material 3 `NavigationBar`, with tab state kept in an
 ///   `IndexedStack`.
 ///
@@ -83,23 +87,72 @@ class _AdaptiveTabShellState extends State<AdaptiveTabShell> {
   Widget build(BuildContext context) {
     final controller = _controller;
     if (controller != null) {
-      return CupertinoTabScaffold(
-        controller: controller,
-        tabBar: CupertinoTabBar(
-          items: [
+      final useGlass = AppPlatform.current == AppPlatform.iosGlass &&
+          !MediaQuery.highContrastOf(context);
+      return useGlass
+          ? _buildGlass(context, controller)
+          : _buildCupertino(controller);
+    }
+    return _buildMaterial();
+  }
+
+  Widget _buildGlass(BuildContext context, CupertinoTabController controller) {
+    final tint = CupertinoTheme.of(context).primaryColor;
+    final tabBar = GlassTabBar.bottom(
+      selectedIndex: widget.currentIndex,
+      // The controller's listener reports the change to the ViewModel.
+      onTabSelected: (index) => controller.index = index,
+      selectedIconColor: tint,
+      selectedLabelColor: tint,
+      tabs: [
+        for (final tab in widget.tabs)
+          GlassTab(
+            icon: Icon(tab.cupertinoIcon),
+            label: tab.label,
+            semanticLabel: tab.label,
+          ),
+      ],
+    );
+
+    // Content scrolls under the floating bar, so pages need its height as
+    // bottom padding to keep their last item reachable.
+    final media = MediaQuery.of(context);
+    return GlassScaffold(
+      bottomBar: tabBar,
+      body: MediaQuery(
+        data: media.copyWith(
+          padding: media.padding.copyWith(bottom: tabBar.preferredSize.height),
+        ),
+        child: IndexedStack(
+          index: widget.currentIndex,
+          children: [
             for (final tab in widget.tabs)
-              BottomNavigationBarItem(
-                icon: Icon(tab.cupertinoIcon),
-                label: tab.label,
-              ),
+              CupertinoTabView(builder: (context) => tab.child),
           ],
         ),
-        tabBuilder: (context, index) => CupertinoTabView(
-          builder: (context) => widget.tabs[index].child,
-        ),
-      );
-    }
+      ),
+    );
+  }
 
+  Widget _buildCupertino(CupertinoTabController controller) {
+    return CupertinoTabScaffold(
+      controller: controller,
+      tabBar: CupertinoTabBar(
+        items: [
+          for (final tab in widget.tabs)
+            BottomNavigationBarItem(
+              icon: Icon(tab.cupertinoIcon),
+              label: tab.label,
+            ),
+        ],
+      ),
+      tabBuilder: (context, index) => CupertinoTabView(
+        builder: (context) => widget.tabs[index].child,
+      ),
+    );
+  }
+
+  Widget _buildMaterial() {
     return Scaffold(
       body: IndexedStack(
         index: widget.currentIndex,

@@ -43,6 +43,7 @@ The theme lives in [`lib/ui/common/app_theme.dart`](lib/ui/common/app_theme.dart
 | Images | [cached_network_image](https://pub.dev/packages/cached_network_image) |
 | Fonts | [google_fonts](https://pub.dev/packages/google_fonts) |
 | Loading states | [shimmer](https://pub.dev/packages/shimmer) |
+| iOS 26+ glass | [liquid_glass_widgets](https://pub.dev/packages/liquid_glass_widgets) (navigation chrome only) |
 | Formatting | [intl](https://pub.dev/packages/intl) |
 
 There is **no backend**. Book data comes from the free [Open Library API](https://openlibrary.org/developers/api); everything you save stays on your device.
