@@ -10,7 +10,7 @@ A quiet, offline-first reading tracker for iOS and Android. Search for any book,
 
 | Feature | Description | Status |
 |---|---|---|
-| Search | Find books by title, author or keyword via Open Library | Planned |
+| Search | Find books by title, author or keyword via Open Library, with endless scrolling | Done |
 | Book details | Cover, title, author, first published year, page count, description | Planned |
 | Shelf | Add a book as **Want to Read**, **Reading** or **Finished**, and change its status | Planned |
 | Progress | Log your current page; see percentage complete | Planned |
@@ -108,7 +108,7 @@ flutter test
 1. ✅ Project setup, theme, bundle ID, iOS/Android only
 2. ✅ `Book` model and `OpenLibraryService`
 3. ✅ Adaptive UI foundation: Cupertino on iOS (Liquid Glass chrome on iOS 26+), Material 3 on Android
-4. ⬜ Search screen with debounced search and result tiles
+4. ✅ Search screen with debounced search, endless scrolling and result tiles
 5. ⬜ Book detail screen
 6. ⬜ `ShelfEntry` model, `ShelfService` (Hive), add/change status
 7. ⬜ My Shelf screen with three tabs

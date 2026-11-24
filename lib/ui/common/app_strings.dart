@@ -23,3 +23,11 @@ const String ksSearchEmptyMessage = 'Search by title, author or keyword.';
 const String ksShelfEmptyTitle = 'Your shelf is empty';
 const String ksShelfEmptyMessage =
     'Books you add from Search will show up here.';
+
+// Search
+const String ksSearchPlaceholder = 'Title, author or keyword';
+const String ksSearchNoResultsTitle = 'No books found';
+String ksSearchNoResultsMessage(String query) =>
+    'Nothing matches "$query". Check the spelling or try an author\'s name.';
+const String ksSearchErrorTitle = 'Couldn\'t search';
+const String ksRetry = 'Retry';
