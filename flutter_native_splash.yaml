@@ -1,0 +1,17 @@
+# Native launch screens. Regenerate after any change:
+#   dart run flutter_native_splash:create
+#
+# iOS: Apple's guidance is a launch screen that looks like the first screen,
+# with no logo or text, so it is plain paper (night in dark mode) and blends
+# straight into the Search tab.
+# Android 12+: the system splash shows the app icon on this colour.
+# Android 11 and below: plain colour, same as iOS.
+flutter_native_splash:
+  color: "#F7F3EC"
+  color_dark: "#15130F"
+
+  android_12:
+    color: "#F7F3EC"
+    color_dark: "#15130F"
+
+  web: false
