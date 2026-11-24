@@ -144,6 +144,7 @@ class OpenLibraryService {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
+      case DioExceptionType.transformTimeout:
         return const OpenLibraryException(
           OpenLibraryErrorType.timeout,
           ksErrorTimeout,
