@@ -8,7 +8,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 
 import 'package:bookish/ui/views/home/home_view.dart' as _i2;
-import 'package:flutter/material.dart' as _i4;
+import 'package:flutter/cupertino.dart' as _i4;
+import 'package:flutter/material.dart' as _i3;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
 import 'package:stacked_services/stacked_services.dart' as _i5;
@@ -16,9 +17,7 @@ import 'package:stacked_services/stacked_services.dart' as _i5;
 class Routes {
   static const homeView = '/home-view';
 
-  static const all = <String>{
-    homeView,
-  };
+  static const all = <String>{homeView};
 }
 
 class StackedRouter extends _i1.RouterBase {
@@ -26,7 +25,7 @@ class StackedRouter extends _i1.RouterBase {
     _i1.RouteDef(
       Routes.homeView,
       page: _i2.HomeView,
-    ),
+    )
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
@@ -34,11 +33,11 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<HomeViewArguments>(
         orElse: () => const HomeViewArguments(),
       );
-      return _i4.MaterialPageRoute<dynamic>(
+      return _i3.MaterialPageRoute<dynamic>(
         builder: (context) => _i2.HomeView(key: args.key),
         settings: data,
       );
-    },
+    }
   };
 
   @override
