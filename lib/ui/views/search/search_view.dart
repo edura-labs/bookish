@@ -7,7 +7,7 @@ import 'package:bookish/ui/widgets/book_tile.dart';
 import 'package:bookish/ui/widgets/empty_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
+import 'package:stacked/stacked.dart' hide AdaptivePage;
 
 import 'search_viewmodel.dart';
 
