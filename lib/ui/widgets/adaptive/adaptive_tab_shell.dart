@@ -87,9 +87,7 @@ class _AdaptiveTabShellState extends State<AdaptiveTabShell> {
   Widget build(BuildContext context) {
     final controller = _controller;
     if (controller != null) {
-      final useGlass = AppPlatform.current == AppPlatform.iosGlass &&
-          !MediaQuery.highContrastOf(context);
-      return useGlass
+      return AppPlatform.usesGlass(context)
           ? _buildGlass(context, controller)
           : _buildCupertino(controller);
     }

@@ -1,6 +1,7 @@
 import 'package:bookish/ui/common/app_platform.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
 enum AdaptiveButtonStyle {
   /// The one key action on a screen (e.g. "Add to Shelf").
@@ -10,10 +11,11 @@ enum AdaptiveButtonStyle {
   secondary,
 }
 
-/// A text button for content areas (not bars). Content stays solid on every
-/// platform, so this never uses glass.
+/// A text button, rendered natively per platform:
 ///
-/// * iOS: `CupertinoButton`, filled (primary) or tinted (secondary).
+/// * iOS 26+: a Liquid Glass pill (`GlassButton`), walnut-tinted for primary,
+///   clear glass for secondary.
+/// * iOS below 26: `CupertinoButton`, filled (primary) or tinted (secondary).
 /// * Android: Material 3 `FilledButton` or `OutlinedButton`.
 class AdaptiveButton extends StatelessWidget {
   const AdaptiveButton({
@@ -33,23 +35,63 @@ class AdaptiveButton extends StatelessWidget {
   /// Fill the available width.
   final bool expand;
 
+  static const _glassHeight = 50.0;
+
+  bool get _primary => style == AdaptiveButtonStyle.primary;
+
   @override
   Widget build(BuildContext context) {
+    if (AppPlatform.usesGlass(context)) return _buildGlass(context);
+
     final button = AppPlatform.current.isIos
         ? _buildCupertino(context)
         : _buildMaterial();
     return expand ? SizedBox(width: double.infinity, child: button) : button;
   }
 
+  Widget _buildGlass(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final foreground = _primary ? scheme.onPrimary : scheme.onSurface;
+
+    return LayoutBuilder(
+      builder: (context, constraints) => GlassButton.custom(
+        onTap: onPressed ?? () {},
+        enabled: onPressed != null,
+        label: label,
+        width: expand ? constraints.maxWidth : null,
+        height: _glassHeight,
+        shape: const LiquidRoundedSuperellipse(borderRadius: _glassHeight / 2),
+        style: _primary ? GlassButtonStyle.prominent : GlassButtonStyle.filled,
+        // Primary is tinted with the scheme's fill tone, which is dark enough
+        // for white text in both light and dark mode.
+        settings: _primary
+            ? LiquidGlassSettings(
+                glassColor: scheme.primary.withValues(alpha: 0.85),
+              )
+            : null,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.w600,
+              color: foreground,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildCupertino(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final primary = style == AdaptiveButtonStyle.primary;
 
     // Fill colours come from the Material scheme, whose dark-mode fills are
     // dark enough for white text (the Cupertino primary is the lighter text
     // tint and is not).
     return CupertinoButton(
-      color: primary ? scheme.primary : scheme.primary.withValues(alpha: 0.14),
+      color: _primary ? scheme.primary : scheme.primary.withValues(alpha: 0.14),
       borderRadius: BorderRadius.circular(12),
       minimumSize: const Size(44, 50),
       onPressed: onPressed,
@@ -57,7 +99,9 @@ class AdaptiveButton extends StatelessWidget {
         label,
         style: TextStyle(
           fontWeight: FontWeight.w600,
-          color: primary ? scheme.onPrimary : CupertinoTheme.of(context).primaryColor,
+          color: _primary
+              ? scheme.onPrimary
+              : CupertinoTheme.of(context).primaryColor,
         ),
       ),
     );
@@ -65,7 +109,7 @@ class AdaptiveButton extends StatelessWidget {
 
   Widget _buildMaterial() {
     final child = Text(label);
-    return style == AdaptiveButtonStyle.primary
+    return _primary
         ? FilledButton(onPressed: onPressed, child: child)
         : OutlinedButton(onPressed: onPressed, child: child);
   }

@@ -1,6 +1,7 @@
 import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 
 /// Which UI the app renders. Decided once, here, and nowhere else:
 /// views and widgets never check `Platform` or OS versions themselves.
@@ -23,6 +24,11 @@ enum AppPlatform {
   static final AppPlatform _detected = _detect();
 
   static AppPlatform get current => debugOverride ?? _detected;
+
+  /// Whether to render Liquid Glass here: iOS 26+, unless the user has turned
+  /// on Increase Contrast, which gets the solid Cupertino version instead.
+  static bool usesGlass(BuildContext context) =>
+      current == AppPlatform.iosGlass && !MediaQuery.highContrastOf(context);
 
   /// First iOS version with Liquid Glass.
   static const glassMinimumIosVersion = 26;
