@@ -122,4 +122,4 @@ Book data and covers are provided by [Open Library](https://openlibrary.org/), a
 
 ## License
 
-© 2026 Eduralabs. All rights reserved.
+Released under the [MIT License](LICENSE). © 2026 Eduralabs.
